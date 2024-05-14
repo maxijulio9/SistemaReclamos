@@ -29,3 +29,9 @@ class ReclamoDAO:
     metadata = MetaData()
 
     #a partir de acá los metodos de dao consumiendo los metodos de las clases importadas.
+
+    @classmethod
+    def all_users():
+        users = Usuario.all_users;
+        for u in users:
+            print (users[u])
