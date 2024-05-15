@@ -31,13 +31,26 @@ class ReclamoDAO:
     #a partir de acá los metodos de dao consumiendo los metodos de las clases importadas.
 
     @classmethod
-    def get_all_users(self, *, use_id = None, mun_id = None):
-        single_mode  = use_id is not None
-        if single_mode and not mun_id:
-            query =  Usuario.single_usuario(use_id= use_id)
-        '''
-        users = Usuario.all_users;
-        for u in users:
-            print (users[u])
-            print ("fin")
-        '''
+    def get_users(self, *, use_id = None, mun_id = None):
+        print("I'm inside of the method")
+
+        if use_id is None:
+            print("Los usuarios son: ")
+            query =  Usuario.all_users()
+        elif(use_id is not None):
+            print("Datos del usuario: ")
+            query = Usuario.single_usuario(use_id=use_id)   
+        return self.connection.execute(query).fetchall() 
+    
+    @classmethod
+    def get_status(self, *, est_id = None):
+        print("I'm inside of the method")
+        
+        if est_id is None:
+            print("Los estados posibles son: ")
+            query =  Estado.all_status()
+        elif(est_id is not None):
+            print("Estado seleccionado: ")
+            query = Estado.single_status(est_id= est_id)
+               
+        return self.connection.execute(query).fetchall() 

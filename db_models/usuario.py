@@ -27,7 +27,7 @@ class Usuario(Base):
         #return cls.connection.execute(query).fetchall()
 
     @classmethod
-    def single_usuario(cls, *, use_id):
+    def single_usuario(cls, use_id):
         """
             Cual es el usuario por use_id
         """
