@@ -31,8 +31,13 @@ class ReclamoDAO:
     #a partir de acá los metodos de dao consumiendo los metodos de las clases importadas.
 
     @classmethod
-    def all_users():
+    def get_all_users(self, *, use_id = None, mun_id = None):
+        single_mode  = use_id is not None
+        if single_mode and not mun_id:
+            query =  Usuario.single_usuario(use_id= use_id)
+        '''
         users = Usuario.all_users;
         for u in users:
             print (users[u])
             print ("fin")
+        '''

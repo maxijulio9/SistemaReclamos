@@ -19,7 +19,7 @@ class Reclamo(Base):
     __tablename__ =  "reclamo"
     print("entering parameters config")
     engine = create_engine(BBDD_CONNECTION)
-    connection = engine.connect()
+    #connection = engine.connect()
     metadata = MetaData()
     rec = Table("reclamo", metadata, autoload=True, autoload_with=engine, schema='claim')
     id_not_in_db = Column(Integer, primary_key=True)
@@ -31,7 +31,8 @@ class Reclamo(Base):
         Cuáles son los parámetros
         """
         query = select([cls.rec]).where(cls.rec.c.rec_id == rec_id)
-        return cls.connection.execute(query).fetchall()
+        return query
+    #return cls.connection.execute(query).fetchall()
 
     @classmethod
     def all_claims(cls):
@@ -40,7 +41,8 @@ class Reclamo(Base):
         """
 
         query = select([cls.rec])
-        return cls.connection.execute(query).fetchall()
+        return query
+    #return cls.connection.execute(query).fetchall()
     
     @classmethod
     def single_claim(cls, rec_id):
@@ -49,7 +51,7 @@ class Reclamo(Base):
         """
 
         query = select([cls.rec]).where(cls.rec.c.rec_id == rec_id)
-        return cls.connection.execute(query).fetchall()
+        return query#return cls.connection.execute(query).fetchall()
     
     '''
     Select rec.nombre, rec.descripcion, m.nombre
@@ -73,7 +75,10 @@ class Reclamo(Base):
                 .select_from(j)
                 .where(cls.rec.c.mun_id == mun_id)
             )
-        result =cls.connection.execute(query).fetchall()
+        
+        '''result =cls.connection.execute(query).fetchall()
         if not result:
             return "No existen registros de reclamos para el municipio con id {}".format(mun_id)
         return result
+'''
+        return query

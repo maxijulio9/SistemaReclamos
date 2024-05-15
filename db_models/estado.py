@@ -22,7 +22,8 @@ class Estado(Base):
         Cuáles son los parámetros
         """
         query = select([cls.estado]).where(cls.estado.c.est_id == est_id)
-        return cls.connection.execute(query).fetchall()
+        return query
+        #return cls.connection.execute(query).fetchall()
 
 
     @classmethod
@@ -30,11 +31,11 @@ class Estado(Base):
         """
         Cuáles son las categorias (en caso de no pasar parámetros)
         """
-        connection = cls.engine.connect()
+       # connection = cls.engine.connect()
         query = select([cls.estado])
-        result = connection.execute(query).fetchall()
-        connection.close()
-        return result
+        #result = connection.execute(query).fetchall()
+       #connection.close()
+        return query
     '''
     @classmethod
     def all_status(cls):
@@ -49,19 +50,19 @@ class Estado(Base):
         """
         Cuáles son las estado(solo nombre) con el est_id
         """
-        connection = cls.engine.connect()
+       # connection = cls.engine.connect()
         query = select([Estado.est_nombre]).where(cls.estado.c.est_id == est_id)
-        result = connection.execute(query).fetchall()
-        connection.close()
-        return result
+        #result = connection.execute(query).fetchall()
+        #connection.close()
+        return query
     
     @classmethod
     def single_status_by_name(cls, est_nombre):
         """
         Cuáles son las status con el est_nombre igual
         """
-        connection = cls.engine.connect()
+      #  connection = cls.engine.connect()
         query = select([cls.estado]).where(cls.estado.c.est_nombre == est_nombre)
-        result = connection.execute(query).fetchall()
-        connection.close()
-        return result
+      #  result = connection.execute(query).fetchall()
+       # connection.close()
+        return query

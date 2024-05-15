@@ -9,7 +9,7 @@ class Gestor(Base):
     __tablename__ =  "gestor"
     print("entering parameters config")
     engine = create_engine(BBDD_CONNECTION)
-    connection = engine.connect()
+    #connection = engine.connect()
     metadata = MetaData()
     gestor = Table("gestor", metadata, autoload=True, autoload_with=engine, schema='claim')
     id_not_in_db = Column(Integer, primary_key=True)
@@ -21,7 +21,8 @@ class Gestor(Base):
             Cuáles son los gestores en la db
         """
         query = select([cls.gestor])
-        return cls.connection.execute(query).fetchall()
+        return query
+        #return cls.connection.execute(query).fetchall()
 
     @classmethod
     def single_gestor(cls, *, ges_id):
@@ -29,4 +30,5 @@ class Gestor(Base):
             Cual es el gestor por ges_id
         """
         query = select([cls.gestor]).where(cls.gestor.c.ges_id == ges_id)
-        return cls.connection.execute(query).fetchall()
+        return query
+        #return cls.connection.execute(query).fetchall()

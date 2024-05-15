@@ -15,7 +15,7 @@ class Municipio(Base):
     __tablename__ =  "municipio"
     print("entering parameters config")
     engine = create_engine(BBDD_CONNECTION)
-    connection = engine.connect()
+    #connection = engine.connect()
     metadata = MetaData()
     muni = Table("municipio", metadata, autoload=True, autoload_with=engine, schema='claim')
     id_not_in_db = Column(Integer, primary_key=True)
@@ -27,7 +27,8 @@ class Municipio(Base):
         Cuáles son los parámetros
         """
         query = select([cls.muni]).where(cls.muni.c.mun_id == mun_id)
-        return cls.connection.execute(query).fetchall()
+        return query
+        #return cls.connection.execute(query).fetchall()
 
     @classmethod
     def all_municipalities(cls):
@@ -35,7 +36,8 @@ class Municipio(Base):
         Cuáles son las municipalidades (en caso de no pasar parámetros)
         """
         query = select([cls.muni])
-        return cls.connection.execute(query).fetchall()
+        return query
+        #return cls.connection.execute(query).fetchall()
     '''
     @classmethod
     def all_municipalities1(cls):
@@ -55,7 +57,8 @@ class Municipio(Base):
         Cuáles son las municipalities con el mun_id
         """
         query = select([cls.muni]).where(cls.muni.c.mun_id == mun_id)
-        return cls.connection.execute(query).fetchall()
+        return query
+        #return cls.connection.execute(query).fetchall()
 
     
     @classmethod
@@ -64,10 +67,10 @@ class Municipio(Base):
         Cuáles son las municipalidades con el mun_nombre igual
         """
         query = select([cls.muni]).where(cls.muni.c.mun_nombre == mun_nombre)
-        result = cls.connection.execute(query).fetchall()
-        if not result:
-            return "No existen registros para"
-        return result
+        #result = cls.connection.execute(query).fetchall()
+        #if not result:
+         #   return "No existen registros para"
+        return query
 
     
     @classmethod
@@ -76,4 +79,5 @@ class Municipio(Base):
         Cuáles son las municipalidades por prov_id
         """
         query = select([cls.muni]).where(cls.muni.c.prov_id == prov_id)
-        return cls.connection.execute(query).fetchall()
+        return query
+        # return cls.connection.execute(query).fetchall()

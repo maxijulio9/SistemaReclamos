@@ -2,7 +2,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, create_engine, MetaData, Table, select
 from config_vars import BBDD_CONNECTION
 
-
+# DESESTIMADA
 
 Base = declarative_base()
 

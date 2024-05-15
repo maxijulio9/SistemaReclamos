@@ -10,7 +10,7 @@ class Comentario(Base):
     __tablename__ =  "comentario"
     print("entering parameters config")
     engine = create_engine(BBDD_CONNECTION)
-    connection = engine.connect()
+   #connection = engine.connect()
     metadata = MetaData()
     comen = Table("comentario", metadata, autoload=True, autoload_with=engine, schema='claim')
     id_not_in_db = Column(Integer, primary_key=True)
@@ -22,7 +22,8 @@ class Comentario(Base):
         Cuáles son los parámetros
         """
         query = select([cls.comen]).where(cls.comen.c.com_id == com_id)
-        return cls.connection.execute(query).fetchall()
+        return query
+        #return cls.connection.execute(query).fetchall()
 
     @classmethod
     def all_benefits(cls):
@@ -31,7 +32,8 @@ class Comentario(Base):
         """
 
         query = select([cls.comen])
-        return cls.connection.execute(query).fetchall()
+        return query 
+        #return cls.connection.execute(query).fetchall()
     
     @classmethod
     def single_benefit(cls, com_id):
@@ -40,7 +42,8 @@ class Comentario(Base):
         """
 
         query = select([cls.comen]).where(cls.comen.c.com_id == com_id)
-        return cls.connection.execute(query).fetchall()
+        return query
+    #   return cls.connection.execute(query).fetchall()
 
     @classmethod
     def older_comment(cls):
@@ -49,6 +52,7 @@ class Comentario(Base):
         """
 
         query = select([cls.comen]).where(cls.comen.c.com_fecha_creacion <= date.today()).order_by(cls.comen.c.com_fecha_creacion).limit(1)
-        return cls.connection.execute(query).fetchall()
+        return query
+        #return cls.connection.execute(query).fetchall()
 
     
