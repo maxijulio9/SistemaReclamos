@@ -1,10 +1,3 @@
-import sys
-import os
-dirname = os.path.dirname(__file__)
- 
-sys.path.append(dirname)
-sys.path.append(dirname+"/db_models/")
-
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, create_engine, MetaData, Table, select
 from config_vars import BBDD_CONNECTION
