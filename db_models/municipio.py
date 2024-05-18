@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, create_engine, MetaData, Table, select
 from config_vars import BBDD_CONNECTION
@@ -23,7 +21,6 @@ class Municipio(Base):
         """
         query = select([cls.muni]).where(cls.muni.c.mun_id == mun_id)
         return query
-        #return cls.connection.execute(query).fetchall()
 
     @classmethod
     def all_municipalities(cls):
@@ -32,19 +29,7 @@ class Municipio(Base):
         """
         query = select([cls.muni])
         return query
-        #return cls.connection.execute(query).fetchall()
-    '''
-    @classmethod
-    def all_municipalities1(cls):
-        """
-        Cuáles son las municipalidades (en caso de no pasar parámetros)
-        """
-        connection1 = cls.engine.connect()
-        query = select([cls.muni])
-        result = connection1.execute(query).fetchall()
-        connection1.close()
-        return result
-    '''
+   
 
     @classmethod
     def single_municipality(cls, mun_id):
@@ -53,7 +38,6 @@ class Municipio(Base):
         """
         query = select([cls.muni]).where(cls.muni.c.mun_id == mun_id)
         return query
-        #return cls.connection.execute(query).fetchall()
 
     
     @classmethod
@@ -75,5 +59,4 @@ class Municipio(Base):
         """
         query = select([cls.muni]).where(cls.muni.c.prov_id == prov_id)
         return query
-        # return cls.connection.execute(query).fetchall()
->>>>>>> 203bbd155c0281b631ba106250f6dcfddac8b6c6
+
