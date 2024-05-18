@@ -1,10 +1,10 @@
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, create_engine, MetaData, Table, select
+from sqlalchemy import Column, Integer, create_engine, MetaData, Table, select, join, and_
 from config_vars import BBDD_CONNECTION
 
 from municipio import Municipio
-from nivel_beneficio import NivelBeneficio
 from nivel import Nivel
+from nivel_beneficio import NivelBeneficio
 from beneficio import Beneficio
 
 
@@ -71,18 +71,19 @@ class Usuario(Base):
       
 
     @classmethod
-    def user_by_municipality(cls, *, use_id):
+    def user_by_municipality(cls, mun_id):
         """
             Cual es el usuario por use_id
         """
         j = join(
                 cls.usuario,
-                municipio.Municipio.muni,
-                cls.usuario.c.mun_id ==  municipio.Municipio.muni.c.mun_id,
+                Municipio.muni,
+                cls.usuario.c.mun_id ==  Municipio.muni.c.mun_id,
             )
         query =(
                  select([cls.usuario, Municipio.mun_nombre])\
-                .select_from(j)
+                .select_fro(j)
+                .where(cls.usuario.c.mun_id == mun_id)
             )
 
         '''query = select([cls.usuario]) \
@@ -93,27 +94,32 @@ class Usuario(Base):
         #return cls.connection.execute(query).fetchall()
     
     @classmethod
-    def user_level(cls, use_id):
+    def user_level_and_benefits(cls, use_id, use_nombre):
         """
-        Cuáles son los beneficios por nivel
+        Cuáles es el nivel del usuario y el beneficio
         """
         j = join(
                 cls,
-                NivelBeneficio,
-                cls.usuario.c.niv_ben_id ==  NivelBeneficio.niv_ben_id
+                nivel_beneficio.NivelBeneficio.nivelBeneficio,
+                cls.usuario.c.niv_ben_id ==  nivel_beneficio.NivelBeneficio.nivelBeneficio.c.niv_ben_id
         ).join(
-                NivelBeneficio,
-                Nivel,
-                NivelBeneficio.niv_id == Nivel.niv_id
+                nivel_beneficio.NivelBeneficio.nivelBeneficio,
+                nivel.Nivel.nivels,
+                nivel_beneficio.NivelBeneficio.nivelBeneficio.c.niv_id == nivel.Nivel.nivels.c.niv_id
         ).join(
-                NivelBeneficio,
-                Beneficio,
-                NivelBeneficio.ben_id == Beneficio.ben_id
+                nivel_beneficio.NivelBeneficio.nivelBeneficio,
+                beneficio.Beneficio.bene,
+                nivel_beneficio.NivelBeneficio.nivelBeneficio.c.ben_id == beneficio.Beneficio.bene.c.ben_id
         )
         
         query = (
                 select([Usuario.use_dni, Usuario.use_nombre,  Nivel.niv_nombre, Beneficio.ben_nombre, Beneficio.ben_descripcion])
                 .select_from(j)
-                .where(cls.usuario.c.use_id == use_id)
+                .where(
+                    and_(
+                    cls.usuario.c.use_id == use_id,
+                    cls.usuario.c.use_nombre == use_nombre
+                    )
+                )
             )
         return query
