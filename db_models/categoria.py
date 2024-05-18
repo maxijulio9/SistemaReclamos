@@ -8,7 +8,7 @@ class Categoria(Base):
     __tablename__ =  "categoria"
     print("entering parameters config")
     engine = create_engine(BBDD_CONNECTION)
-    connection = engine.connect()
+    #connection = engine.connect()
     metadata = MetaData()
     cate = Table("categoria", metadata, autoload=True, autoload_with=engine, schema='claim')
     id_not_in_db = Column(Integer, primary_key=True)
@@ -20,7 +20,8 @@ class Categoria(Base):
         Cuáles son los parámetros
         """
         query = select([cls.cate]).where(cls.cate.c.cat_id == cat_id)
-        return cls.connection.execute(query).fetchall()
+        return query
+        #return cls.connection.execute(query).fetchall()
 
     @classmethod
     def all_categorias(cls):
@@ -29,7 +30,9 @@ class Categoria(Base):
         """
 
         query = select([cls.cate])
-        return cls.connection.execute(query).fetchall()
+        return query
+    
+    #return cls.connection.execute(query).fetchall()
 
 
     @classmethod
@@ -38,7 +41,8 @@ class Categoria(Base):
         Cuáles son las categoria con el cat_id
         """
         query = select([cls.cate]).where(cls.cate.c.cat_id == cat_id)
-        return cls.connection.execute(query).fetchall()
+        return query
+        #return cls.connection.execute(query).fetchall()
 
     
     @classmethod
@@ -47,7 +51,8 @@ class Categoria(Base):
         Cuáles son las categoria con el cat_nombre igual
         """
         query = select([cls.cate]).where(cls.cate.c.cat_nombre == cat_nombre)
-        return cls.connection.execute(query).fetchall()
+        return query
+        #return cls.connection.execute(query).fetchall()
 
     
     

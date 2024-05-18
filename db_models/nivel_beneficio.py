@@ -2,6 +2,9 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, create_engine, MetaData, Table, select
 from config_vars import BBDD_CONNECTION
 
+from nivel import Nivel
+from beneficio import Beneficio
+
 Base = declarative_base()
 
 class NivelBeneficio(Base):
@@ -41,3 +44,24 @@ class NivelBeneficio(Base):
         return query
         #return cls.connection.execute(query).fetchall()
     
+    @classmethod
+    def benefits_by_level_benefits(cls, *, niv_id):
+        """
+        Cuáles son los beneficios por nivel
+        """
+        j = join(
+                cls.nivelBeneficio,
+                nivel.Nivel.nivels,
+                cls.nivelBeneficio.c.niv_id ==  nivel.Nivel.nivels.c.niv_id,
+            )\
+            .join(
+                cls.nivelBeneficio,
+                beneficio.Beneficio.bene,
+                beneficio.Beneficio.bene.c.ben_id ==  cls.nivelBeneficio.c.ben_id,
+            )
+        query = (
+                select([Nivel.niv_nombre, Beneficio.ben_nombre, Beneficio.ben_descripcion])
+                .select_from(j)
+                .where(cls.nivelBeneficio.c.niv_id == niv_id)
+            )
+        return query

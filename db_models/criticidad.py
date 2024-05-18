@@ -33,7 +33,7 @@ class Criticidad(Base):
         #return cls.connection.execute(query).fetchall()
 
     @classmethod
-    def single_criticities(cls, *, cri_id):
+    def single_criticities(cls, cri_id):
         """
         Cuáles son las criticidades con el cri_id
         """
@@ -42,7 +42,7 @@ class Criticidad(Base):
         #return cls.connection.execute(query).fetchall()
     
     @classmethod
-    def single_criticity_by_name(cls, *, cri_nombre):
+    def single_criticity_by_name(cls, cri_nombre):
         """
         Cuáles son las status con el est_nombre igual
         """

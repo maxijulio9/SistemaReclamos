@@ -1,17 +1,11 @@
-import sys
-import os
-dirname = os.path.dirname(__file__)
- 
-sys.path.append(dirname)
-sys.path.append(dirname+"/db_models/")
-
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, create_engine, MetaData, Table, select, join
 from config_vars import BBDD_CONNECTION
 from datetime import date  
 
-from . import municipio
-
+from municipio import Municipio
+from estado import Estado
+from categoria import Categoria
 
 Base = declarative_base()
 
@@ -39,7 +33,6 @@ class Reclamo(Base):
         """
         Cuáles son los beneficios
         """
-
         query = select([cls.rec])
         return query
     #return cls.connection.execute(query).fetchall()
@@ -81,4 +74,39 @@ class Reclamo(Base):
             return "No existen registros de reclamos para el municipio con id {}".format(mun_id)
         return result
 '''
+        return query
+    
+    @classmethod
+    def claims_by_status(cls, est_id):
+        """
+        Cuáles son los reclamos por categoria
+        """
+        j = join(
+                cls,
+                Estado.estado,
+                cls.rec.c.est_id ==  Estado.est_id,
+            )
+        query = (
+                select([cls.rec.c.rec_titulo, cls.rec.c.rec_descripcion, Estado.est_nombre ])
+                .select_from(j)
+                .where(cls.rec.c.est_id == est_id)
+            )
+        return query
+    
+     
+    @classmethod
+    def claims_by_category(cls, cat_id):
+        """
+        Cuáles son los reclamos por categoria
+        """
+        j = join(
+                cls,
+                Categoria.cate,
+                cls.rec.c.cat_id ==  Categoria.cat_id,
+            )
+        query = (
+                select([cls.rec.c.rec_titulo, cls.rec.c.rec_descripcion, Categoria.cate_nombre ])
+                .select_from(j)
+                .where(cls.rec.c.cat_id == cat_id)
+            )
         return query

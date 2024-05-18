@@ -2,9 +2,6 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, create_engine, MetaData, Table, select, join
 from config_vars import BBDD_CONNECTION
 
-from nivel_beneficio import NivelBeneficio
-from beneficio import Beneficio
-
 Base = declarative_base()
 
 class Nivel(Base):
@@ -52,27 +49,20 @@ class Nivel(Base):
         query = select([cls.nivels]).where(cls.nivels.c.niv_nombre == niv_nombre)
         return query
         #return cls.connection.execute(query).fetchall()
-    
-
-    '''--consulta los beneficios por nivel
-    SELECT  n.NIV_NOMBRE, b.BEN_NOMBRE, b.BEN_DESCRIPCION 
-    FROM NIVEL n
-	    JOIN NIVEL_BENEFICIOS nb  ON n.NIV_ID  = nb.NIV_ID
-	    JOIN BENEFICIOS b ON b.BEN_ID  = nb.BEN_ID 
-    WHERE  n.NIV_ID =1;'''
-
-    @classmethod
-    def benefics_by_level(cls, *, niv_id):
-        """
-        Cuáles son los beneficios por nivel
-        """
+ 
+    """
+     @classmethod
+        def benefits_by_level(cls, *, niv_id):
+        
+        #Cuáles son los beneficios por nivel
+        
         j = join(
                 cls.nivels,
-                nivel_beneficios.NivelBeneficio.nivelBeneficio,
+                nivel_beneficio.NivelBeneficio.nivelBeneficio,
                 cls.nivels.c.niv_id ==  nivel_beneficio.NivelBeneficio.nivelBeneficio.c.niv_id,
             )\
             .join(
-                nivel_beneficios.NivelBeneficio.nivelBeneficio,
+                nivel_beneficio.NivelBeneficio.nivelBeneficio,
                 beneficio.Beneficio.bene,
                 beneficio.Beneficio.bene.c.ben_id ==  nivel_beneficio.NivelBeneficio.nivelBeneficio.c.ben_id,
             )
@@ -82,14 +72,4 @@ class Nivel(Base):
                 .where(cls.nivels.c.niv_id == niv_id)
             )
         return query
-        #return cls.connection.execute(query).fetchall()
-
-        '''
-        query = select([Nivel.niv_nombre, Beneficio.ben_nombre, Beneficio.ben_descripcion]) \
-                    .select_from(join(Nivel, NivelBeneficio, Nivel.niv_id == NivelBeneficios.niv_id)) \
-                    .join(Beneficio, Beneficio.ben_id == NivelBeneficio.ben_id) \
-                 .where(Nivel.niv_id == niv_id)
-
-        return query
-        '''
-        
+    """
